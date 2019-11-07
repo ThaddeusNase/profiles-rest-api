@@ -1,16 +1,18 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import HelloSerializer
+from .serializers import HelloSerializer, UserProfileSerializer
 from rest_framework import viewsets
 from rest_framework import status
+from profiles_api import models
+from rest_framework.authentication import TokenAuthentication
+from profiles_api import permissions
 
 # Create your views here.
 
 
 class HelloApiView(APIView):
     # Test API VIEW
-
     serializer_class = HelloSerializer
 
     def get(self, request, format=None):
@@ -97,3 +99,14 @@ class HelloViewSet(viewsets.ViewSet):
     # ViewSet function/action mapt zur http-delete-function/request
     def destroy(self, request, pk=None):
         return Response({"http_method": "DELETE"})
+
+
+
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    # handle creating/updating profiles
+    serializer_class = UserProfileSerializer
+    queryset = models.UserProfile.objects.all()
+    authentication_classes = (TokenAuthentication,) # als Tuple!
+    permission_classes = (permissions.UpdateOwnProfile,)
