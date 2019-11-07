@@ -1,12 +1,16 @@
 from django.shortcuts import render
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .serializers import HelloSerializer, UserProfileSerializer
 from rest_framework import viewsets
 from rest_framework import status
-from profiles_api import models
 from rest_framework.authentication import TokenAuthentication
+from rest_framework import filters
+
+from .serializers import HelloSerializer, UserProfileSerializer
+from profiles_api import models
 from profiles_api import permissions
+
 
 # Create your views here.
 
@@ -110,3 +114,6 @@ class ProfileViewSet(viewsets.ModelViewSet):
     queryset = models.UserProfile.objects.all()
     authentication_classes = (TokenAuthentication,) # als Tuple!
     permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ("name", "email", )
+ 
