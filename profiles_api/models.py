@@ -4,7 +4,6 @@ from django.contrib.auth.models import BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
 
 # Create your models here.
-
 class UserProfileManager(BaseUserManager):
 
     def create_user(self, email, name, password=None):
@@ -28,6 +27,7 @@ class UserProfileManager(BaseUserManager):
         return user
 
 
+
 class UserProfile(AbstractBaseUser, PermissionsMixin):
     """ Database Model for users in the system """
 
@@ -49,5 +49,3 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
-
-    

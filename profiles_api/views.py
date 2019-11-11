@@ -6,6 +6,9 @@ from rest_framework import viewsets
 from rest_framework import status
 from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
+
 
 from .serializers import HelloSerializer, UserProfileSerializer
 from profiles_api import models
@@ -49,7 +52,7 @@ class HelloApiView(APIView):
             return Response(
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST
-            )
+                )
 
     def put(self, request):
         return Response({"method": "PUT"})
@@ -60,7 +63,6 @@ class HelloApiView(APIView):
 
     def delete(self, request):
         return Response({"method": "DELETE"})
-
 
 
 
@@ -106,8 +108,6 @@ class HelloViewSet(viewsets.ViewSet):
 
 
 
-
-
 class ProfileViewSet(viewsets.ModelViewSet):
     # handle creating/updating profiles
     serializer_class = UserProfileSerializer
@@ -116,4 +116,9 @@ class ProfileViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ("name", "email", )
- 
+
+
+
+class UserLoginApiView(ObtainAuthToken):
+    # handle creating user authentication tokens
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
