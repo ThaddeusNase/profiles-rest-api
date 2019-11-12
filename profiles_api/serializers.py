@@ -25,3 +25,21 @@ class UserProfileSerializer(serializers.ModelSerializer):
             password=validated_data["password"]
         )
         return user
+
+
+
+# Serializer für ProfileFeedItem
+class ProfileFeedItemSerializer(serializers.ModelSerializer):
+    class Meta():
+        model = models.ProfileFeedItem
+        # id, created_on = haben default values = READ ONLY
+        # user_profile und status_text = einzigen Felder die veränderbar sind ("writable")!
+        # user_profile = NUR AUTHENTICATED USER! -> AUCH = READ ONLY!!!
+        fields = ["id", "user_profile" , "status_text", "created_on"]
+        extra_kwargs = {
+            "user_profile": {
+                "read_only": True
+            }
+        }
+
+        
